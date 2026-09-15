@@ -1,6 +1,6 @@
 .mode line
 
-DROP VIEW IF EXISTS authors_ru;
+DROP VIEW IF EXISTS authors_rus;
 DROP TABLE IF EXISTS author_names;
 DROP TABLE IF EXISTS languages;
 DROP TABLE IF EXISTS authors;
@@ -30,12 +30,12 @@ CREATE TABLE author_names (
     PRIMARY KEY (author, iso_639_2)
 );
 
-CREATE VIEW authors_ru AS
-SELECT array_to_string(AN_ru.names, ' ') AS name
+CREATE VIEW authors_rus AS
+SELECT array_to_string(AN_rus.names, ' ') AS name
 FROM authors A
-LEFT JOIN author_names AN_ru ON (
-    A.id = AN_ru.author
-    AND AN_ru.iso_639_2 = 'rus'
+LEFT JOIN author_names AN_rus ON (
+    A.id = AN_rus.author
+    AND AN_rus.iso_639_2 = 'rus'
 );
 
 BEGIN TRANSACTION;
@@ -47,5 +47,5 @@ BEGIN TRANSACTION;
     --     currval('author_id'), 'rus', ['Улиц']
     -- ); -- test transaction violating pk
 COMMIT;
-SELECT * FROM authors_ru;
+SELECT * FROM authors_rus;
 
