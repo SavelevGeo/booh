@@ -24,10 +24,10 @@ CREATE TABLE authors (
 
 CREATE TABLE author_names (
     author INT REFERENCES authors(id),
-    lang_iso2 VARCHAR(2)
+    iso_639_2 VARCHAR
         REFERENCES languages(iso_639_2),
     names VARCHAR[],
-    PRIMARY KEY (author, lang_iso2)
+    PRIMARY KEY (author, iso_639_2)
 );
 
 CREATE VIEW authors_ru AS
@@ -35,7 +35,7 @@ SELECT array_to_string(AN_ru.names, ' ') AS name
 FROM authors A
 LEFT JOIN author_names AN_ru ON (
     A.id = AN_ru.author
-    AND AN_ru.lang_iso2 = 'rus'
+    AND AN_ru.iso_639_2 = 'rus'
 );
 
 BEGIN TRANSACTION;
@@ -44,7 +44,7 @@ BEGIN TRANSACTION;
         currval('author_id'), 'rus', ['Улицкая']
     );
     -- INSERT INTO author_names VALUES (
-    --     currval('author_id'), 'ru', ['Улиц']
+    --     currval('author_id'), 'rus', ['Улиц']
     -- ); -- test transaction violating pk
 COMMIT;
 SELECT * FROM authors_ru;
